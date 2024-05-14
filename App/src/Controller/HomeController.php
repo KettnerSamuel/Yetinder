@@ -12,25 +12,43 @@ class HomeController extends AbstractController
     #[Route(path: '/', name: 'app_home_index')]
     public function index(): Response
     {
-        $model = 'Hello World';
-        $cesta = 'Account/main.html';
-       return $this->render('main.html.twig', [
-           'pathToMain' => $cesta,
-           'number' => $model
+        $cesta = 'Home/main.html';
+        return $this->render('default.html.twig', [
+           'pathToMain' => $cesta
         ]);
     }
 
-    #[Route(path: '/account', name: 'app_home')]
+    #[Route(path: '/account', name: 'app_account_index')]
     public function home(): Response
     {
-        $model = 'Home';
-        return new Response($model);
+        return $this->render('default.html.twig', [
+            'pathToMain' => 'Account/main.html'
+        ]);
     }
 
-    #[Route(path: '/home/kok', name: 'app_home')]
-    public function kok(): Response
+    #[Route(path: '/yetinder', name: 'app_Yetinder_index')]
+    public function Yetinder(): Response
     {
-        $model = 'Home';
-        return new Response($model);
+        $cesta = 'YetinderPage/main.html';
+        return $this->render('default.html.twig', [
+           'pathToMain' => $cesta
+        ]);
+    }
+    #[Route(path: '/yetinder/add', name: 'app_Form', methods: ['POST'])]
+    public function Form(): Response
+    {
+        $cesta = 'Form/main.html';
+        return $this->render('default.html.twig', [
+           'pathToMain' => $cesta
+        ]);
+    }
+
+    #[Route(path: '{catchall}', name: 'app_home', requirements: ['catchall' => '.+'])]
+    public function Default(): Response
+    {
+        $cesta = 'Home/main.html';
+        return $this->render('default.html.twig', [
+           'pathToMain' => $cesta
+        ]);
     }
 }
