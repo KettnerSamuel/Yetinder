@@ -17,9 +17,17 @@
           <nav class="my-2 my-md-0 mr-md-3">
             <a class="p-2 text-dark" href="{{ path('app_home_index') }}">Home</a>
             <a class="p-2 text-dark" href="{{ path('app_Yetinder_index') }}">Yetinder</a>
-            <a class="p-2 text-dark" href="{{ path('app_account_index') }}">account</a>
+            {% if app.user %}
+              <a class="p-2 pr-4 text-dark border-right" href="{{ path('app_Form') }}">Add Yeti</a>
+            {% endif %}
           </nav>
-          <a class="btn btn-outline-primary" href="#">Sign up</a>
+            {% if app.user %}
+                <div>
+                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% else %}
+                <a class="btn btn-outline-primary" href="{{ path('app_register') }}">Sign up</a>
+            {% endif %}
         </div>
         <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
           {% include pathToMain %}
@@ -28,7 +36,5 @@
             Národní park Yeti © 2024
         </footer>
         {% endblock %}
-
-
     </body>
 </html>
