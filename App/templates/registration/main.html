@@ -7,7 +7,7 @@
 
                 {{ form_errors(registrationForm) }}
 
-                <form method="post">
+                <form action="{{ path('app_registerForm') }}" method="post">
                     {{ form_start(registrationForm) }}
                     <div class="mb-3">
                         {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Username'}}) }}

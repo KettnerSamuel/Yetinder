@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\YettiesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: YettiesRepository::class)]
 class Yetties
@@ -21,19 +22,16 @@ class Yetties
     private ?string $appearance = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $weight = null;
+    private ?float $weight = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $height = null;
+    private ?float $height = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $rating = [];
 
     #[ORM\Column(length: 255)]
     private ?string $color = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     private ?string $imagePath = null;
@@ -117,19 +115,6 @@ class Yetties
 
         return $this;
     }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
     public function getImagePath(): ?string
     {
         return $this->imagePath;

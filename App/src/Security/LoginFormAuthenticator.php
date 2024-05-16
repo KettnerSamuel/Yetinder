@@ -18,7 +18,6 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
-
     public const LOGIN_ROUTE = 'app_register';
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)

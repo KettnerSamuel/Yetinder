@@ -1,37 +1,40 @@
 <div class="container">
     <h1 class="mt-5 mb-4 text-center">Add New Yeti</h1>
     <form style="text-align: center; width: 50%;  margin: 0 auto" method="POST" enctype="multipart/form-data">
+        {{ form_start(yetiForm) }}
         <!-- Yeti Name -->
         <div class="mb-3">
-            <label for="yetiName" class="form-label">Yeti Name *</label>
-            <input type="text" class="form-control text-center" id="yetiName" name="yetiName" required>
+            <label class="form-label">Yeti Name *</label>
+            {{ form_widget(yetiForm.name, {'attr': {'class': 'form-control text-center', 'placeholder': 'Mother in law'}}) }}
         </div>
         <!-- Place of Discovery -->
         <div class="mb-3">
-            <label for="placeOfDiscovery" class="form-label">Place of Discovery*</label>
-            <input type="text" class="form-control text-center" id="placeOfDiscovery" name="placeOfDiscovery" required>
+            <label class="form-label">Place of Discovery *</label>
+            {{ form_widget(yetiForm.appearance, {'attr': {'class': 'form-control text-center', 'placeholder': 'Brazil'}}) }}
         </div>
         <!-- Color -->
         <div class="mb-3">
-            <label for="color" class="form-label">Color*</label>
-            <input type="text" class="form-control text-center" id="color" name="color" required>
+            <label class="form-label">Color *</label>
+            {{ form_widget(yetiForm.color, {'attr': {'class': 'form-control text-center'}}) }}
         </div>
         <!-- Weight -->
         <div class="mb-3">
-            <label for="weight" class="form-label">Weight</label>
-            <input type="text" class="form-control text-center" id="weight" name="weight">
+            <label class="form-label">Weight in kg</label>
+            {{ form_widget(yetiForm.weight, {'attr': {'class': 'form-control text-center', 'placeholder': '320' }}) }}
         </div>
         <!-- Height -->
         <div class="mb-3">
-            <label for="height" class="form-label">Height</label>
-            <input type="text" class="form-control text-center" id="height" name="height">
+            <label class="form-label">Height in cm</label>
+            {{ form_widget(yetiForm.height, {'attr': {'class': 'form-control text-center', 'id': 'heightInput', 'placeholder': '250'}}) }}
         </div>
+
         <!-- Image -->
         <div class="mb-3">
-            <label for="image" class="form-label">Image *</label>
-            <input type="file" class="form-control p-1 text-center" id="image" name="image" required>
+            <label class="form-label">Image *</label>
+            {{ form_widget(yetiForm.image_path, {'attr': {'class': 'form-control text-center', 'type': 'file', 'accept': 'image/*'}}) }}
         </div>
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Add Yeti</button>
+        {{ form_end(yetiForm) }}
     </form>
 </div>
