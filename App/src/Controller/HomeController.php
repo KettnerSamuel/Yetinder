@@ -82,14 +82,14 @@ class HomeController extends AbstractController
                     foreach ($finder as $file) {
                         $directorySize += $file->getSize();
                     }
-                    //if
+                    //if for knowing, if there is still space
                     if ($directorySize < $maxDirectorySize) {
                         $repositoryGotSpace = true;
                     } else {
                         $repositoryGotSpace = false;
                     }
                 }
-
+                //saving everything
                 if (!$yetiRepository->findOneByName($yeti->getName())) {
                      if ($form->isSubmitted() && $form->isValid()) {
                         $yeti->setDate(new \DateTime());
@@ -103,7 +103,7 @@ class HomeController extends AbstractController
 
                             try {
                                 $imageFile->move(
-                                    $directoryPath ,
+                                    $directoryPath,
                                     $newFilename
                                 );
                             } catch (FileException $e) {
@@ -128,7 +128,7 @@ class HomeController extends AbstractController
                 'yetiForm' => $form,
                 'vykreslovatImg' => $repositoryGotSpace,
                 'error' => $error
-            ]);
+                ]);
             } else  {
                 return $this->redirectToRoute('app_register');
             }

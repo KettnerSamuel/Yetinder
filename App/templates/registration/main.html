@@ -5,7 +5,9 @@
             <div class="py-5">
                 <h1 class="display-4 text-center mb-4">Register</h1>
 
-                {{ form_errors(registrationForm) }}
+                {% if error == "špatně zadané jméno/heslo" %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
 
                 <form action="{{ path('app_registerForm') }}" method="post">
                     {{ form_start(registrationForm) }}
@@ -28,7 +30,7 @@
                 <h1 class="display-4 text-center mb-4">Sign in</h1>
 
                 <form method="post" class="form-signin">
-                    {% if error and error.messageKey|trans(error.messageData, 'security') != "Invalid CSRF token." %}
+                    {% if error and error != "špatně zadané jméno/heslo" and error.messageKey|trans(error.messageData, 'security') != "Invalid CSRF token." %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
 

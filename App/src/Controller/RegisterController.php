@@ -14,11 +14,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+
 class RegisterController extends AbstractController
 {
 
     #[Route ('/registerForm', name: 'app_registerForm', methods: ['POST'])]
-    public function registerForm(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager){
+    public function registerForm(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, AuthenticationUtils $authenticationUtils){
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -39,20 +40,25 @@ class RegisterController extends AbstractController
 
             return $this->redirectToRoute('app_register');
         }
-        return $this->redirectToRoute('app_register');
+        
+        return $this->render('default.html.twig', [
+            'registrationForm' => $form,
+            'pathToMain' => 'registration/main.html',
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error' => 'špatně zadané jméno/heslo'
+        ]);
     }
+
     #[Route('/account', name: 'app_register')]
     public function register(AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
-
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
+        $error = $authenticationUtils->getLastAuthenticationError();
+        
         $form = $this->createForm(RegistrationFormType::class);
 
         if ($this->getUser()) {
