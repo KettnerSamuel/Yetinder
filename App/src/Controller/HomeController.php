@@ -60,7 +60,7 @@ class HomeController extends AbstractController
                 //for image saving
                 $directoryPath = '/var/www/html/public/uploads/images';
                 $maxDirectorySize = 1024 * 1024 * 10; // 10 MB limit
-                $repositoryGotSpace = false;
+                $repositoryGotSpace = null;
 
                 // Ensure the directory exists
                 if (!$filesystem->exists($directoryPath)) {
@@ -71,20 +71,25 @@ class HomeController extends AbstractController
                         chown($directoryPath, 'www-data');
                         chgrp($directoryPath, 'www-data');
                     } catch (\Exception $e) {
-                        throw new \Exception('Failed to create the directory: ' . $e->getMessage());
+                        $repositoryGotSpace = false;
                     }
                 }
 
                 // Calculate directory size to avoid exceeding the limit
-                $directorySize = 0;
-                $finder->files()->in($directoryPath);
-                foreach ($finder as $file) {
-                    $directorySize += $file->getSize();
+                if($repositoryGotSpace == false){
+                    $directorySize = 0;
+                    $finder->files()->in($directoryPath);
+                    foreach ($finder as $file) {
+                        $directorySize += $file->getSize();
+                    }
+                    //if
+                    if ($directorySize < $maxDirectorySize) {
+                        $repositoryGotSpace = true;
+                    } else {
+                        $repositoryGotSpace = false;
+                    }
                 }
-                //if
-                if ($directorySize < $maxDirectorySize) {
-                    $repositoryGotSpace = true;
-                }
+
                 if (!$yetiRepository->findOneByName($yeti->getName())) {
                      if ($form->isSubmitted() && $form->isValid()) {
                         $yeti->setDate(new \DateTime());
