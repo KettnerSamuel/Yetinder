@@ -45,7 +45,7 @@ class RegisterController extends AbstractController
             'registrationForm' => $form,
             'pathToMain' => 'registration/main.html',
             'last_username' => $authenticationUtils->getLastUsername(),
-            'error' => 'špatně zadané jméno/heslo'
+            'error' => "Wrong username/password"
         ]);
     }
 
@@ -58,7 +58,7 @@ class RegisterController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
         $error = $authenticationUtils->getLastAuthenticationError();
-        
+
         $form = $this->createForm(RegistrationFormType::class);
 
         if ($this->getUser()) {

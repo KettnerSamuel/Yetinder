@@ -5,17 +5,17 @@
             <div class="py-5">
                 <h1 class="display-4 text-center mb-4">Register</h1>
 
-                {% if error == "špatně zadané jméno/heslo" %}
+                {% if error == "Wrong username/password" %}
                     <div class="alert alert-danger">{{ error }}</div>
                 {% endif %}
 
                 <form action="{{ path('app_registerForm') }}" method="post">
                     {{ form_start(registrationForm) }}
                     <div class="mb-3">
-                        {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Username'}}) }}
+                        {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control text-center form-control-sm', 'placeholder': 'Username'}}) }}
                     </div>
                     <div class="mb-3">
-                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Password'}}) }}
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control text-center form-control-sm', 'placeholder': 'Password (atleast 3 characters)'}}) }}
                     </div>
                     <button type="submit" class="btn btn-lg btn-primary btn-block">Register</button>
                     {{ form_end(registrationForm) }}
@@ -30,16 +30,16 @@
                 <h1 class="display-4 text-center mb-4">Sign in</h1>
 
                 <form method="post" class="form-signin">
-                    {% if error and error != "špatně zadané jméno/heslo" and error.messageKey|trans(error.messageData, 'security') != "Invalid CSRF token." %}
+                    {% if error and error != "Wrong username/password" and error.messageKey|trans(error.messageData, 'security') != "Invalid CSRF token." %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
 
                     <div class="mb-3">
-                        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control form-control-sm" autocomplete="username" required autofocus placeholder="Username">
+                        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="text-center form-control form-control-sm" autocomplete="username" required autofocus placeholder="Username">
                     </div>
 
                     <div class="mb-3">
-                        <input type="password" name="password" id="inputPassword" class="form-control form-control-sm" autocomplete="current-password" required placeholder="Password">
+                        <input type="password" name="password" id="inputPassword" class="text-center form-control form-control-sm" autocomplete="current-password" required placeholder="Password">
                     </div>
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

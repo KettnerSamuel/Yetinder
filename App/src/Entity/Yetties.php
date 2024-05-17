@@ -142,11 +142,11 @@ class Yetties
     {
         $ratings = $this->getRating();
         $totalRating = 0;
-        foreach ($ratings as $userRating) {
-            if (isset($userRating[1])) {
-                $totalRating += $userRating[1][1];
-            }
+
+        foreach ($ratings as $rating) {
+            $totalRating += $rating; 
         }
+
         return $totalRating;
     }
 }

@@ -93,7 +93,7 @@ class HomeController extends AbstractController
                 if (!$yetiRepository->findOneByName($yeti->getName())) {
                      if ($form->isSubmitted() && $form->isValid()) {
                         $yeti->setDate(new \DateTime());
-                        $yeti->setRating([$user->getUsername() => 1]);
+                        $yeti->setRating([$user->getUsername() => 0]);
                         $imageFile = $form->get('image_path')->getData();
 
                         if ($imageFile and $repositoryGotSpace) {
