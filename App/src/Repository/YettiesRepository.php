@@ -16,6 +16,16 @@ class YettiesRepository extends ServiceEntityRepository
         parent::__construct($registry, Yetties::class);
     }
 
+    public function findTopTenYetis(): array
+    {
+        $yetis = $this->findAll();
+        usort($yetis, function (Yetties $a, Yetties $b) {
+            return $b->getTotalRating() <=> $a->getTotalRating();
+        });
+
+        return array_slice($yetis, 0, 10);
+    }
+
 //    /**
 //     * @return Yetties[] Returns an array of Yetties objects
 //     */

@@ -12,9 +12,6 @@ class ZDefaultController extends AbstractController
     #[Route(path: '{catchall}', name: 'app_home', requirements: ['catchall' => '.+'])]
     public function Default(): Response
     {
-        $cesta = 'Home/main.html';
-        return $this->render('default.html.twig', [
-           'pathToMain' => $cesta
-        ]);
+        return $this->redirectToRoute('app_home_index');
     }
 }

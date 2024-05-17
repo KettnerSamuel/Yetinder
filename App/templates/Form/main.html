@@ -4,8 +4,13 @@
         {{ form_start(yetiForm) }}
         <!-- Yeti Name -->
         <div class="mb-3">
-            <label class="form-label">Yeti Name *</label>
-            {{ form_widget(yetiForm.name, {'attr': {'class': 'form-control text-center', 'placeholder': 'Mother in law'}}) }}
+            {% if error %}
+                <label class="form-label font-weight-bold text-danger" style="color: red">{{ error }}</label>
+                {{ form_widget(yetiForm.name, {'attr': {'class': 'text-danger form-control text-center', 'placeholder': 'Mother in law'}}) }}
+            {% else %}
+                <label class="form-label">Yeti Name *</label>
+                {{ form_widget(yetiForm.name, {'attr': {'class': 'form-control text-center', 'placeholder': 'Mother in law'}}) }}
+            {% endif %}
         </div>
         <!-- Place of Discovery -->
         <div class="mb-3">
@@ -29,10 +34,18 @@
         </div>
 
         <!-- Image -->
-        <div class="mb-3">
-            <label class="form-label">Image *</label>
-            {{ form_widget(yetiForm.image_path, {'attr': {'class': 'form-control text-center', 'type': 'file', 'accept': 'image/*'}}) }}
-        </div>
+
+        {% if vykreslovatImg %}
+            <div class="mb-4">
+                <label class="form-label">Image *</label>
+                {{ form_widget(yetiForm.image_path, {'attr': {'class': 'form-control text-center', 'type': 'file', 'accept': 'image/*'}}) }}
+            </div>
+        {% else %}
+            <div style="visibility: hidden; margin-bottom: -1.5em ">
+                {{ form_widget(yetiForm.image_path, {'attr': {'class': 'form-control text-center', 'type': 'file', 'accept': 'image/*', 'required': 'required'}}) }}
+            </div>
+        {% endif %}
+
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Add Yeti</button>
         {{ form_end(yetiForm) }}

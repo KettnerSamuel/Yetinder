@@ -40,15 +40,16 @@ class YetiFormType extends AbstractType
                     'pattern' => '[0-9]',
                     'inputmode' => 'numeric'
                 ],
+                'required' => false
             ])
             ->add('height', NumberType::class, [
                 'attr' => [
                     'pattern' => '[0-9]',
                     'inputmode' => 'numeric'
                 ],
+                'required' => false
             ])
             ->add('image_path', FileType::class, [
-            'required' => true,
             'constraints' => [
                 new File([
                     'maxSize' => '1024k',

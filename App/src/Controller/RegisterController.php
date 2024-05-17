@@ -56,10 +56,7 @@ class RegisterController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class);
 
         if ($this->getUser()) {
-            $cesta = 'Home/main.html';
-            return $this->render('default.html.twig', [
-           'pathToMain' => $cesta
-        ]);
+            return $this->redirectToRoute('app_home_index');
         } else  {
             return $this->render('default.html.twig', [
                 'registrationForm' => $form,

@@ -1,0 +1,39 @@
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Place</th>
+                <th style="width: 20em">Name</th>
+                <th>Rating</th>
+                <th style="width: 15em">Location</th>
+                <th>Weight</th>
+                <th>Height</th>
+                <th>Date Added</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for yeti in top_ten_yetis %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ yeti.name }}</td>
+                <td>{{ yeti.getTotalRating() }}</td>
+                <td>{{ yeti.appearance }}</td>
+                <td>{{ yeti.weight ? yeti.weight ~ ' kg' : 'Nezadáno' }}</td>
+                <td>{{ yeti.height ? yeti.height ~ ' cm' : 'Nezadáno' }}</td>
+                <td>{{ yeti.date ? yeti.date|date('d-m-Y') : '' }}</td>
+            </tr>
+            {% endfor %}
+            {% for i in 1..(10 - top_ten_yetis|length) %}
+                <tr>
+                    <td>{{ top_ten_yetis|length + loop.index }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -138,4 +138,15 @@ class Yetties
 
         return $this;
     }
+    public function getTotalRating(): int
+    {
+        $ratings = $this->getRating();
+        $totalRating = 0;
+        foreach ($ratings as $userRating) {
+            if (isset($userRating[1])) {
+                $totalRating += $userRating[1][1];
+            }
+        }
+        return $totalRating;
+    }
 }
