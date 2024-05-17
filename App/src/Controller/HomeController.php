@@ -62,7 +62,20 @@ class HomeController extends AbstractController
                 $maxDirectorySize = 1024 * 1024 * 10; // 10 MB limit
                 $repositoryGotSpace = false;
 
-                // proti moc velkému obsahu
+                // Ensure the directory exists
+                if (!$filesystem->exists($directoryPath)) {
+                    try {
+                        $filesystem->mkdir($directoryPath, 0755);
+                        chown('/var/www/html/public/uploads', 'www-data');
+                        chgrp('/var/www/html/public/uploads', 'www-data');
+                        chown($directoryPath, 'www-data');
+                        chgrp($directoryPath, 'www-data');
+                    } catch (\Exception $e) {
+                        throw new \Exception('Failed to create the directory: ' . $e->getMessage());
+                    }
+                }
+
+                // Calculate directory size to avoid exceeding the limit
                 $directorySize = 0;
                 $finder->files()->in($directoryPath);
                 foreach ($finder as $file) {
