@@ -14,53 +14,34 @@ class RatingHistory
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $Date = null;
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $Record = [];
 
-    #[ORM\Column(nullable: true)]
-    private ?int $up = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $down = null;
-
-    public function getId(): ?int
+    public function getRecord(): array
     {
-        return $this->id;
+        return $this->Record;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function setRecord(array $Record): static
     {
-        return $this->Date;
-    }
-
-    public function setDate(\DateTimeInterface $Date): static
-    {
-        $this->Date = $Date;
+        $this->Record = $Record;
 
         return $this;
     }
 
-    public function getUp(): ?int
+    public function addRecord(array $Record): static
     {
-        return $this->up;
-    }
-
-    public function setUp(?int $up): static
-    {
-        $this->up = $up;
+        $this->Record += $Record;
 
         return $this;
     }
 
-    public function getDown(): ?int
+    public function addRecordDown(array $Record): static
     {
-        return $this->down;
-    }
-
-    public function setDown(?int $down): static
-    {
-        $this->down = $down;
+        $this->Record = $Record;
 
         return $this;
     }
+
+
 }

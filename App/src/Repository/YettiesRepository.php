@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Yetties;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
 
 /**
  * @extends ServiceEntityRepository<Yetties>
@@ -25,6 +26,24 @@ class YettiesRepository extends ServiceEntityRepository
 
         return array_slice($yetis, 0, 10);
     }
+
+    public function findRelevant(User $user): ?Yetties
+    {
+        $yetis = $this->findAll();
+
+        $filteredYetis = array_filter($yetis, function (Yetties $yeti) use ($user) {
+            $userRating = $yeti->getRating()[$user->getUsername()] ?? null;
+            return $userRating === null;
+        });
+
+        if (empty($filteredYetis)) {
+            return null;
+        }
+
+        $randomKey = array_rand($filteredYetis);
+        return $filteredYetis[$randomKey];
+    }
+
 
 //    /**
 //     * @return Yetties[] Returns an array of Yetties objects

@@ -18,8 +18,8 @@
                 <td>{{ yeti.name }}</td>
                 <td>{{ yeti.getTotalRating() }}</td>
                 <td>{{ yeti.appearance }}</td>
-                <td>{{ yeti.weight ? yeti.weight ~ ' kg' : 'unspecified' }}</td>
-                <td>{{ yeti.height ? yeti.height ~ ' cm' : 'unspecified' }}</td>
+                <td>{{ yeti.weight ? yeti.weight ~ ' kg' : 'unknown' }}</td>
+                <td>{{ yeti.height ? yeti.height ~ ' cm' : 'unknown' }}</td>
                 <td>{{ yeti.date ? yeti.date|date('d-m-Y') : '' }}</td>
             </tr>
             {% endfor %}

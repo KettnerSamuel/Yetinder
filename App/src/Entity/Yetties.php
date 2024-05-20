@@ -104,6 +104,13 @@ class Yetties
         return $this;
     }
 
+    public function addRating(array $rating): static
+    {
+        $this->rating += $rating;
+
+        return $this;
+    }
+
     public function getColor(): ?string
     {
         return $this->color;
@@ -144,7 +151,7 @@ class Yetties
         $totalRating = 0;
 
         foreach ($ratings as $rating) {
-            $totalRating += $rating; 
+            $totalRating += $rating;
         }
 
         return $totalRating;

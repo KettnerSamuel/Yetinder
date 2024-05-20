@@ -21,6 +21,9 @@ class YetiFormType extends AbstractType
             ->add('appearance', options: ['required' => true])
             ->add('color', choiceType::class, [
                 'choices' => [
+                    'White' => 'White',
+                    'Brown' => 'Brown',
+                    'Black' => 'Black',
                     'Green' => 'Green',
                     'Red' => 'Red',
                     'Blue' => 'Blue',
@@ -28,23 +31,20 @@ class YetiFormType extends AbstractType
                     'Purple' => 'Purple',
                     'Orange' => 'Orange',
                     'Pink' => 'Pink',
-                    'Brown' => 'Brown',
-                    'Black' => 'Black',
-                    'White' => 'White',
                 ],
                 'multiple' => false,
                 'required' => true
             ])
             ->add('weight', NumberType::class, [
                 'attr' => [
-                    'pattern' => '[0-9]',
+                    'pattern' => '^\d{1,4}$',
                     'inputmode' => 'numeric'
                 ],
                 'required' => false
             ])
             ->add('height', NumberType::class, [
                 'attr' => [
-                    'pattern' => '[0-9]',
+                    'pattern' => '^\d{1,4}$',
                     'inputmode' => 'numeric'
                 ],
                 'required' => false

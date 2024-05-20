@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\RatingHistory;
 use App\Entity\User;
 use App\Entity\Yetties;
 use App\Form\YetiFormType;
+use App\Repository\RatingHistoryRepository;
 use App\Repository\YettiesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,12 +35,14 @@ class HomeController extends AbstractController
     }
 
     #[Route(path: '/yetinder', name: 'app_yetinder_index')]
-    public function Yetinder(): Response
+    public function Yetinder(YettiesRepository $yetiRepository): Response
     {
         if ($this->getUser()) {
             $cesta = 'YetinderPage/main.html';
+            $RelevantYeti = $yetiRepository->findRelevant($this->getUser());
             return $this->render('default.html.twig', [
                'pathToMain' => $cesta,
+               'yeti' => $RelevantYeti
             ]);
         } else {
             return $this->redirectToRoute('app_register');
@@ -60,14 +64,14 @@ class HomeController extends AbstractController
                 //for image saving
                 $directoryPath = '/var/www/html/public/uploads/images';
                 $maxDirectorySize = 1024 * 1024 * 10; // 10 MB limit
-                $repositoryGotSpace = null;
+                $repositoryGotSpace = true;
 
                 // Ensure the directory exists
                 if (!$filesystem->exists($directoryPath)) {
                     try {
-                        $filesystem->mkdir($directoryPath, 0755);
                         chown('/var/www/html/public/uploads', 'www-data');
                         chgrp('/var/www/html/public/uploads', 'www-data');
+                        $filesystem->mkdir($directoryPath, 0755);
                         chown($directoryPath, 'www-data');
                         chgrp($directoryPath, 'www-data');
                     } catch (\Exception $e) {
@@ -76,7 +80,7 @@ class HomeController extends AbstractController
                 }
 
                 // Calculate directory size to avoid exceeding the limit
-                if($repositoryGotSpace == false){
+                if($repositoryGotSpace == true){
                     $directorySize = 0;
                     $finder->files()->in($directoryPath);
                     foreach ($finder as $file) {
@@ -109,9 +113,9 @@ class HomeController extends AbstractController
                             } catch (FileException $e) {
                                 throw new \Exception('Failed to upload the image');
                             }
-                            $yeti->setImagePath($directoryPath .'/'.$newFilename);
+                            $yeti->setImagePath('/uploads/images/'.$newFilename);
                         } else {
-                            $yeti->setImagePath('/var/www/html/public/uploads/default/yeti.jpg');
+                            $yeti->setImagePath('/uploads/default/yeti.jpg');
                         }
                         $entityManager->persist($yeti);
                         $entityManager->flush();
@@ -133,5 +137,42 @@ class HomeController extends AbstractController
                 return $this->redirectToRoute('app_register');
             }
         }
+    }
+    #[Route ('/yetinder/up', name: 'app_UpVote', methods: ['POST'])]
+    public function upVoteForm(Request $request, EntityManagerInterface $entityManager, YettiesRepository $yetiRepository){
+        $user = $this->getUser();
+        //přidání hodnocení
+        $yeti = $request->request->get('yeti');
+        $OneYeti = $yetiRepository->findOneByName($yeti);
+        $OneYeti->addRating([$user->getUsername() => 1]);
+        // historie upvotů
+
+        $entityManager->persist($OneYeti);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_yetinder_index');
+    }
+    #[Route ('/yetinder/down', name: 'app_DownVote', methods: ['POST'])]
+    public function downVoteForm(Request $request, EntityManagerInterface $entityManager, YettiesRepository $yetiRepository, RatingHistoryRepository $ratingHistoryRepository){
+        $user = $this->getUser();
+        $newDown = new RatingHistory();
+        //přidání hodnocení
+        $yeti = $request->request->get('yeti');
+        $OneYeti = $yetiRepository->findOneByName($yeti);
+        $OneYeti->addRating([$user->getUsername() => -1]);
+        // historie downvotů
+        if($ratingHistoryRepository->findOneBy(['Record[0]' => date('Y-m-d')])){
+            $Date = $ratingHistoryRepository->findOneBy(['Record[0]' => date('Y-m-d')]);
+            $ratings = $Date->getRatings();
+            $ratings[2][date('Y-m-d')] += 1;
+            $Date->addRecord()($ratings);
+        } else {
+            $Date = New RatingHistory();
+            $Date->setRecord([date('Y-m-d') => 0, 1]);
+        }
+
+        $entityManager->persist($OneYeti);
+        $entityManager->persist($Date);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_yetinder_index');
     }
 }
