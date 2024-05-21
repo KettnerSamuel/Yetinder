@@ -27,6 +27,34 @@ class YettiesRepository extends ServiceEntityRepository
         return array_slice($yetis, 0, 10);
     }
 
+    public function CountYetiesByDate(): ?array
+    {
+        $allRecords = $this->findAll();
+        $date = "";
+        $count = 0;
+        $array = [];
+        foreach ($allRecords as $yeti) {
+            if ($date == "") {
+                $date = $yeti->getDate();
+                $count += 1;
+            } else if ($date == $yeti->getDate()){
+                $count += 1;
+            } else if ($date != $yeti->getDate()) {
+                array_push($array, [$date, $count]);
+                $date = $yeti->getDate();
+                $count = 1;
+            }
+        }
+        if ($date != "" && count($array) > 0) {
+            array_push($array, [$date, $count]);
+        }
+        if ($array) {
+            return $array;
+        } else {
+            return null;
+        }
+    }
+
     public function findRelevant(User $user): ?Yetties
     {
         $yetis = $this->findAll();

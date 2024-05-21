@@ -23,14 +23,18 @@ use Symfony\Component\Finder\Finder;
 class HomeController extends AbstractController
 {
     #[Route(path: '/', name: 'app_home_index')]
-    public function index(YettiesRepository $yetiRepository): Response
+    public function index(YettiesRepository $yetiRepository, RatingHistoryRepository $ratingHistoryRepository): Response
     {
         $cesta = 'Home/main.html';
         $topTenYetis = $yetiRepository->findTopTenYetis();
+        $yetisStatistics = $yetiRepository->CountYetiesByDate();
+        $rating = $ratingHistoryRepository->findAllToArray();
 
         return $this->render('default.html.twig', [
-           'pathToMain' => $cesta,
-           'top_ten_yetis' => $topTenYetis
+            'pathToMain' => $cesta,
+            'top_ten_yetis' => $topTenYetis,
+            'yeti_statistics' => $yetisStatistics,
+            'ratings' => $rating,
         ]);
     }
 
@@ -138,39 +142,66 @@ class HomeController extends AbstractController
             }
         }
     }
+
+    #[Route(path: '/yeti/Page', name: 'app_YetiPage', methods: ['POST'])]
+    public function AboutYeti(Request $request, YettiesRepository $yetiRepository)
+    {
+        $cesta = 'AboutYeti/main.html';
+        $yeti = $request->request->get('yeti');
+        $RelevantYeti = $yetiRepository->findOneByName($yeti);
+
+        if ($this->getUser()) {
+            return $this->render('default.html.twig', [
+               'pathToMain' => $cesta,
+               'yeti' => $RelevantYeti
+            ]);
+        } else {
+            return $this->redirectToRoute('app_register');
+        }
+    }
+
     #[Route ('/yetinder/up', name: 'app_UpVote', methods: ['POST'])]
-    public function upVoteForm(Request $request, EntityManagerInterface $entityManager, YettiesRepository $yetiRepository){
+    public function upVoteForm(Request $request, EntityManagerInterface $entityManager, YettiesRepository $yetiRepository, RatingHistoryRepository $ratingHistoryRepository){
         $user = $this->getUser();
         //přidání hodnocení
         $yeti = $request->request->get('yeti');
-        $OneYeti = $yetiRepository->findOneByName($yeti);
-        $OneYeti->addRating([$user->getUsername() => 1]);
+        $RelevantYeti = $yetiRepository->findOneByName($yeti);
+        $RelevantYeti->addRating([$user->getUsername() => 1]);
         // historie upvotů
+        if($ratingHistoryRepository->findOneByDate()){
+            $Date = $ratingHistoryRepository->findOneByDate();
+            $currentValue = $Date->getRating()[date('Y-m-d')][0];
+            $currentValue += 1;
+            $Date->setRating([date('Y-m-d') => [0=>$currentValue, 1=>$Date->getRating()[date('Y-m-d')][1]]]);
+        } else {
+            $Date = New RatingHistory();
+            $Date->setRating([date('Y-m-d') => [0=>1, 1=>0]]);
+        }
 
-        $entityManager->persist($OneYeti);
+        $entityManager->persist($RelevantYeti);
+        $entityManager->persist($Date);
         $entityManager->flush();
         return $this->redirectToRoute('app_yetinder_index');
     }
     #[Route ('/yetinder/down', name: 'app_DownVote', methods: ['POST'])]
     public function downVoteForm(Request $request, EntityManagerInterface $entityManager, YettiesRepository $yetiRepository, RatingHistoryRepository $ratingHistoryRepository){
         $user = $this->getUser();
-        $newDown = new RatingHistory();
         //přidání hodnocení
         $yeti = $request->request->get('yeti');
-        $OneYeti = $yetiRepository->findOneByName($yeti);
-        $OneYeti->addRating([$user->getUsername() => -1]);
+        $RelevantYeti = $yetiRepository->findOneByName($yeti);
+        $RelevantYeti->addRating([$user->getUsername() => -1]);
         // historie downvotů
-        if($ratingHistoryRepository->findOneBy(['Record[0]' => date('Y-m-d')])){
-            $Date = $ratingHistoryRepository->findOneBy(['Record[0]' => date('Y-m-d')]);
-            $ratings = $Date->getRatings();
-            $ratings[2][date('Y-m-d')] += 1;
-            $Date->addRecord()($ratings);
+        if($ratingHistoryRepository->findOneByDate()){
+            $Date = $ratingHistoryRepository->findOneByDate();
+            $currentValue = $Date->getRating()[date('Y-m-d')][1];
+            $currentValue += 1;
+            $Date->setRating([date('Y-m-d') => [0=>$Date->getRating()[date('Y-m-d')][0], 1=>$currentValue]]);
         } else {
             $Date = New RatingHistory();
-            $Date->setRecord([date('Y-m-d') => 0, 1]);
+            $Date->setRating([date('Y-m-d') => [0=>0, 1=>1]]);
         }
 
-        $entityManager->persist($OneYeti);
+        $entityManager->persist($RelevantYeti);
         $entityManager->persist($Date);
         $entityManager->flush();
         return $this->redirectToRoute('app_yetinder_index');

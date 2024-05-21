@@ -1,39 +1,113 @@
 <div class="container">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Place</th>
-                <th style="width: 20em">Name</th>
-                <th>Rating</th>
-                <th style="width: 15em">Location</th>
-                <th>Weight</th>
-                <th>Height</th>
-                <th>Date Added</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for yeti in top_ten_yetis %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ yeti.name }}</td>
-                <td>{{ yeti.getTotalRating() }}</td>
-                <td>{{ yeti.appearance }}</td>
-                <td>{{ yeti.weight ? yeti.weight ~ ' kg' : 'unknown' }}</td>
-                <td>{{ yeti.height ? yeti.height ~ ' cm' : 'unknown' }}</td>
-                <td>{{ yeti.date ? yeti.date|date('d-m-Y') : '' }}</td>
-            </tr>
-            {% endfor %}
-            {% for i in 1..(10 - top_ten_yetis|length) %}
-                <tr>
-                    <td>{{ top_ten_yetis|length + loop.index }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="row" style="margin-bottom: 80px;">
+        <div class="col-md-12">
+            <h1 class="text-center fw-bold display-3 py-3 rounded" style="font-family: 'Droid Sans Mono Dotted'; border-bottom:black 2px solid; margin-bottom: -25px; background-color: rgba(211,211,211, 0.6);">The best of Yeti</h1>
+            <table class="table table-bordered my-4">
+                <thead>
+                    <tr style="height: 50px">
+                        <th>Place</th>
+                        <th style="width: 20em">Name</th>
+                        <th>Rating</th>
+                        <th style="width: 15em">Location</th>
+                        <th>Weight</th>
+                        <th>Height</th>
+                        <th>Date Added</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for yeti in top_ten_yetis %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <form id="yetiPage-{{ loop.index }}" action="{{ path('app_YetiPage') }}" method="post">
+                                <input type="hidden" name="yeti" value="{{ yeti.name }}">
+                            </form>
+                            <a onclick="document.getElementById('yetiPage-{{ loop.index }}').submit();">{{ yeti.name }}</a>
+                        </td>
+                        <td>{{ yeti.getTotalRating() }}</td>
+                        <td>{{ yeti.appearance }}</td>
+                        <td>{{ yeti.weight ? yeti.weight ~ ' kg' : 'unknown' }}</td>
+                        <td>{{ yeti.height ? yeti.height ~ ' cm' : 'unknown' }}</td>
+                        <td>{{ yeti.date ? yeti.date|date('d-m-Y') : '' }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for i in 1..(10 - top_ten_yetis|length) %}
+                    <tr>
+                        <td>{{ top_ten_yetis|length + loop.index }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mb-5" style="margin-bottom: -1em;">
+        <div class="col-md-12" >
+            <h1 class="text-center fw-bold display-3 py-3 rounded" style="font-family: 'Droid Sans Mono Dotted'; border-bottom:black 2px solid; margin-bottom: -25px; background-color: rgba(211,211,211, 0.6);">Statistics</h1>
+        </div>
+        <div class="col-md-6" style="margin-right: -1.2%;" >
+            <table class="table table-bordered my-4" style=" width: 103%;">
+                <thead>
+                    <tr style="height: 58px">
+                        <th colspan="2" style="font-weight: bold; font-size: 20px; width: 50%;">Activity of adding Yetis</th>
+                    </tr>
+                    <tr style="height: 58px">
+                        <th class="w-75">Date</th>
+                        <th class="w-25">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for statistics in yeti_statistics ?? [] %}
+                        <tr>
+                            <td>{{ statistics[0]|date('d.m.Y')}}</td>
+                            <td>{{ statistics[1] ?? 0}}</td>
+                        </tr>
+                    {% endfor %}
+                    {% for i in 1..(11 - yeti_statistics|length) %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-bordered my-4" style=" width: 103%;">
+                <thead>
+                    <tr style="height: 58px">
+                        <th colspan="3" style="font-weight: bold; font-size: 20px; width: 50%;">Activity of rating Yetis</th>
+                    </tr>
+                    <tr style="height: 58px">
+                        <th>Date</th>
+                        <th class="w-25">Ups</th>
+                        <th class="w-25">Downs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rating in ratings %}
+                        {% for date, values in rating %}
+                        <tr>
+                            <td>{{ date|date('d.m.Y') }}</td>
+                            <td>{{ values[0] }}</td>
+                            <td>{{ values[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for i in 1..(11 - ratings|length) %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

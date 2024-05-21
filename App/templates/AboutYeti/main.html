@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="card border-0 shadow mx-auto position-relative" style="max-width: 400px;">
+        <img style="max-height: 400px" src="{{ yeti.ImagePath ?? '/uploads/default/yeti.jpg'}}" class="card-img-top" alt="Yeti Image">
+        <div class="card-body mb-4">
+            <h3 class="font-weight-bold card-title text-center mb-4">{{ yeti.name ?? "unknown" }}</h3>
+            <hr>
+            <ul class="list-group list-group-flush" style="font-size: 20px;">
+                <li class="list-group-item border-0 py-1">
+                    <strong>Location:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.appearance ?? "unknown" }}</span>
+                </li>
+                <li class="list-group-item border-0 py-1">
+                    <strong>Height:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.height is defined ? yeti.height ~ ' cm' : 'unknown' }}</span>
+                </li>
+                <li class="list-group-item border-0 py-1">
+                    <strong>Weight:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.weight is defined ? yeti.weight ~ ' kg' : 'unknown' }}</span>
+                </li>
+                <li class="list-group-item border-0 py-1">
+                    <strong>Color:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.color ?? "unknown" }}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="position-absolute bottom-0 start-0 p-2 rounded-end" style="left: 1em; bottom: 5px;">
+            <span>{{ yeti.date|date('d-m-Y') }}</span>
+        </div>
+        <div class="position-absolute bottom-0 end-0 p-2 rounded-start" style="right: 1em; bottom: 5px;">
+            <strong>Rating:</strong> <span>{{ yeti.getTotalRating() ?? 'unknown' }}</span>
+        </div>
+    </div>
+</div>

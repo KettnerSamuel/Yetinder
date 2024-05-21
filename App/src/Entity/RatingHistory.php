@@ -15,33 +15,18 @@ class RatingHistory
     private ?int $id = null;
 
     #[ORM\Column(type: Types::ARRAY)]
-    private array $Record = [];
+    private array $rating = [];
 
-    public function getRecord(): array
+    public function getRating(): array
     {
-        return $this->Record;
+        return $this->rating;
     }
 
-    public function setRecord(array $Record): static
+    public function setRating(array $rating): static
     {
-        $this->Record = $Record;
+        $this->rating = $rating;
 
         return $this;
     }
-
-    public function addRecord(array $Record): static
-    {
-        $this->Record += $Record;
-
-        return $this;
-    }
-
-    public function addRecordDown(array $Record): static
-    {
-        $this->Record = $Record;
-
-        return $this;
-    }
-
 
 }

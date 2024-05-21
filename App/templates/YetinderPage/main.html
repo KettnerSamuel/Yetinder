@@ -1,21 +1,21 @@
 <div class="container">
     <div class="card border-0 shadow mx-auto" style="max-width: 400px;">
-        <img src="{{ yeti.ImagePath ?? '/uploads/default/yeti.jpg'}}" class="card-img-top" alt="Yeti Image">
+        <img style="max-height: 400px" src="{{ yeti.ImagePath ?? '/uploads/default/yeti.jpg'}}" class="card-img-top" alt="Yeti Image">
         <div class="card-body">
             <h3 class="font-weight-bold card-title text-center mb-3">{{ yeti.name ?? "Bigfoot" }}</h3>
             <hr>
             <ul class="list-group list-group-flush" style="font-size: 20px;">
                 <li class="list-group-item border-0 py-1">
-                    <strong>Lokace:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.appearance ?? "The Himalayas" }}</span>
+                    <strong>Location:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.appearance ?? "The Himalayas" }}</span>
                 </li>
                 <li class="list-group-item border-0 py-1">
-                    <strong>Výška:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.height is defined ? yeti.height ~ ' cm' : 'unknown' }}</span>
+                    <strong>Height:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.height is defined ? yeti.height ~ ' cm' : 'unknown' }}</span>
                 </li>
                 <li class="list-group-item border-0 py-1">
-                    <strong>Tíha:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.weight is defined ? yeti.weight ~ ' kg' : 'unknown' }}</span>
+                    <strong>Weight:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.weight is defined ? yeti.weight ~ ' kg' : 'unknown' }}</span>
                 </li>
                 <li class="list-group-item border-0 py-1">
-                    <strong>Barva:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.color ?? "White" }}</span>
+                    <strong>Color:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.color ?? "White" }}</span>
                 </li>
             </ul>
             <div class="text-center mt-4">
