@@ -31,17 +31,19 @@
                         <td>{{ yeti.date ? yeti.date|date('d-m-Y') : '' }}</td>
                     </tr>
                     {% endfor %}
-                    {% for i in 1..(10 - top_ten_yetis|length) %}
-                    <tr>
-                        <td>{{ top_ten_yetis|length + loop.index }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    {% endfor %}
+                    {% if (10 - top_ten_yetis|length) >= 1 %}
+                        {% for i in 1..(10 - top_ten_yetis|length)  %}
+                            <tr>
+                                <td>{{ top_ten_yetis|length + loop.index }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>
@@ -68,12 +70,14 @@
                             <td>{{ statistics[1] ?? 0}}</td>
                         </tr>
                     {% endfor %}
-                    {% for i in 1..(11 - yeti_statistics|length) %}
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    {% endfor %}
+                    {% if (11 - yeti_statistics|length) >= 1 %}
+                        {% for i in 1..(11 - yeti_statistics|length) %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>
@@ -99,13 +103,15 @@
                         </tr>
                         {% endfor %}
                     {% endfor %}
-                    {% for i in 1..(11 - ratings|length) %}
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    {% endfor %}
+                    {% if (11 - ratings|length) >= 1 %}
+                        {% for i in 1..(11 - ratings|length) %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>
