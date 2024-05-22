@@ -39,13 +39,13 @@ class YettiesRepository extends ServiceEntityRepository
                 $count += 1;
             } else if ($date == $yeti->getDate()){
                 $count += 1;
-            } else if ($date != $yeti->getDate()) {
+            } else if ($date != $yeti->getDate() && count($array) < 11) {
                 array_push($array, [$date, $count]);
                 $date = $yeti->getDate();
                 $count = 1;
             }
         }
-        if ($date != "" && count($array) > 0) {
+        if ($date != "" && count($array) < 11) {
             array_push($array, [$date, $count]);
         }
         if ($array) {

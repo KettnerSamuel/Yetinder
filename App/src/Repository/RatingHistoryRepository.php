@@ -34,7 +34,9 @@ class RatingHistoryRepository extends ServiceEntityRepository
         $allRecords = $this->findAll();
         $array = [];
         foreach ($allRecords as $result) {
-            array_push($array, $result->getRating());
+            if (count($array) < 11){
+                array_push($array, $result->getRating());
+            }
         }
         if ($array) {
             return $array;;

@@ -9,10 +9,10 @@
                     <strong>Location:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.appearance ?? "unknown" }}</span>
                 </li>
                 <li class="list-group-item border-0 py-1">
-                    <strong>Height:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.height is defined ? yeti.height ~ ' cm' : 'unknown' }}</span>
+                    <strong>Height:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{  yeti.height is defined and yeti.height is not null ? yeti.height ~ ' cm' : 'unknown' }}</span>
                 </li>
                 <li class="list-group-item border-0 py-1">
-                    <strong>Weight:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.weight is defined ? yeti.weight ~ ' kg' : 'unknown' }}</span>
+                    <strong>Weight:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.weight is defined and yeti.weight in not null ? yeti.weight ~ ' kg' : 'unknown' }}</span>
                 </li>
                 <li class="list-group-item border-0 py-1">
                     <strong>Color:</strong> <span style="font-size: 18px;" class="text-truncate h6">{{ yeti.color ?? "unknown" }}</span>
