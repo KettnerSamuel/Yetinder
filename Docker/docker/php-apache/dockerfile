@@ -17,12 +17,12 @@ RUN docker-php-ext-install intl opcache pdo_mysql zip gd
 RUN pecl install xdebug
 RUN a2enmod rewrite
 
-#INSTALL APCU
-RUN pecl install apcu-5.1.22 && docker-php-ext-enable apcu
-RUN echo "extension=apcu.so" > /usr/local/etc/php/php.ini
-RUN echo "apc.enable_cli=1" > /usr/local/etc/php/php.ini
-RUN echo "apc.enable=1" > /usr/local/etc/php/php.ini
-#APCU
+# Install APCU
+RUN apt-get update && apt-get install -y libpcre3-dev
+RUN pecl install apcu && docker-php-ext-enable apcu
+RUN echo "extension=apcu.so" >> /usr/local/etc/php/conf.d/apcu.ini
+RUN echo "apc.enable_cli=1" >> /usr/local/etc/php/conf.d/apcu.ini
+RUN echo "apc.enable=1" >> /usr/local/etc/php/conf.d/apcu.ini
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
